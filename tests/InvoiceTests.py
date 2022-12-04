@@ -1,5 +1,4 @@
 import json
-import re
 import unittest
 
 from assertpy import *
@@ -12,6 +11,8 @@ class InvoiceTests(unittest.TestCase):
         plays_file = open("../Plays.json")
         self.invoice = json.loads(invoice_file.read())
         self.plays = json.loads(plays_file.read())
+        invoice_file.close()
+        plays_file.close()
         self.dollar_regexp = r'\$\d*\,?\d{3}.\d{2}[\s, \n]'
 
 
@@ -22,7 +23,6 @@ class InvoiceTests(unittest.TestCase):
         assert_that(statement(self.invoice, self.plays)).matches(self.dollar_regexp)
 
     def test_contains_price(self):
-        print(statement(self.invoice, self.plays))
         assert_that(statement(self.invoice, self.plays)).contains("Amount owed is")
 
     def test_view_amount_of_credits(self):
